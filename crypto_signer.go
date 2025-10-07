@@ -5,6 +5,7 @@ import (
 	"crypto"
 	"fmt"
 	"io"
+	"strings"
 )
 
 // Implements crypto.Signer interface for AzureTrustedSigning
@@ -19,7 +20,7 @@ func (ats AzureTrustedSigning) Public() crypto.PublicKey {
 
 // Implements crypto.Signer interface for AzureTrustedSigning
 func (ats AzureTrustedSigning) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error) {
-	hashFunc := opts.HashFunc().String()
+	hashFunc := strings.ReplaceAll(opts.HashFunc().String(), "-", "")
 
 	if FromHashFunc[hashFunc] == "" {
 		return nil, fmt.Errorf("currently unsupported hash function: %s", hashFunc)
