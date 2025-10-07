@@ -11,6 +11,10 @@ import (
 
 // Fetches the certificate chain for the configured profile
 func (ats *AzureTrustedSigning) GetCertificateChain(ctx context.Context) ([]*x509.Certificate, error) {
+	if ats.chain != nil {
+		return ats.chain.Certificates, nil
+	}
+
 	token, err := ats.getToken(ctx)
 	if err != nil {
 		return nil, err
@@ -43,6 +47,8 @@ func (ats *AzureTrustedSigning) GetCertificateChain(ctx context.Context) ([]*x50
 	if err != nil {
 		return nil, err
 	}
+
+	ats.chain = certificates
 
 	return certificates.Certificates, nil
 }

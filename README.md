@@ -51,3 +51,5 @@ func main() {
 	fmt.Printf("Signature: %x\n", signature.Signature)
 }
 ```
+
+The interface also implements crypto.Signer, so you can use it directly with libraries like cosign.

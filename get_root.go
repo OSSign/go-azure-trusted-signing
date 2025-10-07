@@ -10,6 +10,10 @@ import (
 
 // Fetches the root certificate for the configured profile
 func (ats *AzureTrustedSigning) GetRootCertificate(ctx context.Context) (*x509.Certificate, error) {
+	if ats.root != nil {
+		return ats.root, nil
+	}
+
 	token, err := ats.getToken(ctx)
 	if err != nil {
 		return nil, err
@@ -38,5 +42,11 @@ func (ats *AzureTrustedSigning) GetRootCertificate(ctx context.Context) (*x509.C
 		return nil, err
 	}
 
-	return x509.ParseCertificate(body)
+	cert, err := x509.ParseCertificate(body)
+	if err != nil {
+		return nil, err
+	}
+
+	ats.root = cert
+	return cert, nil
 }

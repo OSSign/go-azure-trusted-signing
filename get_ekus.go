@@ -10,6 +10,10 @@ import (
 // Fetches the EKU list for the configured profile
 // The EKUs are returned as a list of string OIDs
 func (ats *AzureTrustedSigning) GetExtendedKeyUsages(ctx context.Context) ([]string, error) {
+	if ats.ekus != nil {
+		return ats.ekus, nil
+	}
+
 	token, err := ats.getToken(ctx)
 	if err != nil {
 		return nil, err
@@ -37,6 +41,8 @@ func (ats *AzureTrustedSigning) GetExtendedKeyUsages(ctx context.Context) ([]str
 	if err := request.BodyUnmarshalJson(&ekus); err != nil {
 		return nil, err
 	}
+
+	ats.ekus = ekus
 
 	return ekus, nil
 }

@@ -67,6 +67,12 @@ const (
 	StatusNotFound SignatureStatus = "NotFound"
 )
 
+var FromHashFunc = map[string]SignatureAlgorithm{
+	"SHA256": RS256,
+	"SHA384": RS384,
+	"SHA512": RS512,
+}
+
 // SignRequest represents a request to sign a digest or list of file hashes
 type SignRequest struct {
 	SignatureAlgorithm   SignatureAlgorithm

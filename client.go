@@ -2,6 +2,7 @@ package goats
 
 import (
 	"context"
+	"crypto/x509"
 	"fmt"
 	"strings"
 	"time"
@@ -9,6 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"go.mozilla.org/pkcs7"
 )
 
 // The current API Version of Azure Trsuted Signing this library is built for
@@ -47,6 +49,10 @@ type AzureTrustedSigning struct {
 	ProfileName string `json:"profileName" yaml:"profileName"`
 
 	token *azcore.AccessToken
+
+	root  *x509.Certificate
+	chain *pkcs7.PKCS7
+	ekus  []string
 }
 
 // Create a new Azure Trusted Signing client with a custom credential provider from the Azure SDK
