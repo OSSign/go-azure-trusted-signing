@@ -21,6 +21,7 @@ func (ats *AzureTrustedSigning) GetRootCertificate(ctx context.Context) (*x509.C
 
 	request, err := greq.
 		GetRequest(ats.getURL("rootcert")).
+		WithClient(ats.client).
 		WithQueryParam("api-version", apiVersion).
 		WithAuth(&greq.BearerAuth{Token: token, Prefix: "Bearer"}).
 		WithHeader("Accept", "application/x-x509-ca-cert, application/json").

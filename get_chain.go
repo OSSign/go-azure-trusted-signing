@@ -22,6 +22,7 @@ func (ats *AzureTrustedSigning) GetCertificateChain(ctx context.Context) ([]*x50
 
 	request, err := greq.
 		GetRequest(ats.getURL("certchain")).
+		WithClient(ats.client).
 		WithQueryParam("api-version", apiVersion).
 		WithAuth(&greq.BearerAuth{Token: token, Prefix: "Bearer"}).
 		WithHeader("Accept", "application/pkcs7-mime, application/x-x509-ca-cert, application/json").

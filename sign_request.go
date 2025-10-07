@@ -19,6 +19,7 @@ func (ats *AzureTrustedSigning) RequestSignature(ctx context.Context, req SignRe
 
 	request, err := greq.
 		PostRequest(ats.getURL()).
+		WithClient(ats.client).
 		WithQueryParam("api-version", apiVersion).
 		WithAuth(&greq.BearerAuth{Token: token, Prefix: "Bearer"}).
 		WithHeader("Accept", "application/json").

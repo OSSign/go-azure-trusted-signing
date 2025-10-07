@@ -21,6 +21,7 @@ func (ats *AzureTrustedSigning) GetExtendedKeyUsages(ctx context.Context) ([]str
 
 	request, err := greq.
 		GetRequest(ats.getURL("eku")).
+		WithClient(ats.client).
 		WithQueryParam("api-version", apiVersion).
 		WithAuth(&greq.BearerAuth{Token: token, Prefix: "Bearer"}).
 		WithHeader("Accept", "application/json").

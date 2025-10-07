@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/x509"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
@@ -53,6 +54,8 @@ type AzureTrustedSigning struct {
 	root  *x509.Certificate
 	chain *pkcs7.PKCS7
 	ekus  []string
+
+	client *http.Client
 }
 
 // Create a new Azure Trusted Signing client with a custom credential provider from the Azure SDK
@@ -62,6 +65,8 @@ func NewClient(region AzureTrustedSigningRegion, credential azcore.TokenCredenti
 		Credential:  credential,
 		AccountName: accountName,
 		ProfileName: profileName,
+
+		client: http.DefaultClient,
 	}
 }
 
@@ -77,6 +82,8 @@ func NewDefaultClient(region AzureTrustedSigningRegion, accountName, profileName
 		Credential:  cred,
 		AccountName: accountName,
 		ProfileName: profileName,
+
+		client: http.DefaultClient,
 	}, nil
 }
 
@@ -93,7 +100,14 @@ func NewClientSecretClient(region AzureTrustedSigningRegion, tenantID, clientID,
 		Credential:  cred,
 		AccountName: accountName,
 		ProfileName: profileName,
+
+		client: http.DefaultClient,
 	}, nil
+}
+
+// Manually override the HTTP Client used for the connection
+func (ats *AzureTrustedSigning) SetHTTPClient(client *http.Client) {
+	ats.client = client
 }
 
 // baseURL returns the base URL for the Azure Trusted Signing instance in the specified region
