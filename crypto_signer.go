@@ -35,7 +35,7 @@ func (ats AzureTrustedSigning) Sign(rand io.Reader, digest []byte, opts crypto.S
 		return nil, err
 	}
 
-	if response.Status != "Completed" {
+	if response.Status != StatusSucceeded {
 		return nil, fmt.Errorf("signing did not complete successfully, status: %s", response.Status)
 	}
 
